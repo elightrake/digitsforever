@@ -20,7 +20,7 @@ function getRandomInteger(min, max) {
 
 function generateTargetNumber() {
     const min = 50;
-    const max = 600;
+    const max = 500;
     targetNumber = getRandomInteger(min, max);
     document.querySelector("#target-number").textContent = targetNumber;
 }
@@ -32,6 +32,7 @@ function generateNumberGrid() {
             originalNumbers.push(num);
         }
     }
+    originalNumbers.sort((a, b) => a - b); // Sort the array low to high
     const numberDivs = document.querySelectorAll(".number");
     numberDivs.forEach((div, index) => {
         div.textContent = originalNumbers[index];
@@ -43,19 +44,19 @@ function resetGame() {
     // Remove the "selected" class from all the numbers
     const numbers = document.querySelectorAll('.number');
     numbers.forEach(number => {
-      number.classList.remove('selected1');
-      //number.classList.remove('selected2');
+        number.classList.remove('selected1');
+        //number.classList.remove('selected2');
     });
-  
+
     // Remove the "selectedOperation" class from all the operations
     const operations = document.querySelectorAll('.operation');
     operations.forEach(operation => {
-      operation.classList.remove('selectedOperation');
+        operation.classList.remove('selectedOperation');
     });
-  
+
     // Clear the message
     document.querySelector('#message').textContent = '';
-  
+
     // Reset the numbers to the original numbers
     const numberDivs = document.querySelectorAll(".number");
     numberDivs.forEach((div, index) => {
@@ -161,14 +162,14 @@ function handleClick(event) {
         if (selected1) {
             // Get all operations
             const operations = document.querySelectorAll('.operation');
-    
+
             // Remove the "selectedOperation" class from all operations except the clicked operation
             operations.forEach(operation => {
                 if (operation !== click) {
                     operation.classList.remove('selectedOperation');
                 }
             });
-    
+
             // Toggle the "selectedOperation" class on the clicked operation
             click.classList.toggle('selectedOperation');
             console.log(click.textContent);
@@ -177,8 +178,20 @@ function handleClick(event) {
             //alert('Please select a number first.');
         }
     }
+
+    // const revealButton = document.querySelector("#reveal");
+
+    // revealButton.addEventListener("click", () => {
+    //     console.log('reveal');
+    //     const solution = calculatePath(originalNumbers, targetNumber);
+    //     if (solution) {
+    //         const messageDiv = document.querySelector("#message");
+    //         messageDiv.textContent = `Solution: ${solution.join(" ")}`;
+    //     }
+    // });
+
 }
-  
+
 // Run it
 
 window.addEventListener("load", () => {
@@ -186,5 +199,5 @@ window.addEventListener("load", () => {
     generateNumberGrid();
     document.querySelectorAll('.operation').forEach(button => {
         button.addEventListener('click', handleClick);
-      });
+    });
 });

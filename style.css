@@ -1,13 +1,13 @@
 body {
 	font-family: Arial, sans-serif;
-	margin: 0;
+	margin: 1;
 	padding: 0;
 }
 
 #container {
 	max-width: 600px;
 	margin: 0 auto;
-	padding: 20px;
+	padding: 100px;
 	background-color: #f5f5f5;
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
@@ -140,8 +140,26 @@ h1 {
 	background-color: #6bd32f;
 }
 
+#reveal {
+	position: relative;
+	bottom: 0px;
+	left: 330px;
+	font-size: 20px;
+	background-color: #45df8a;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+#reveal:hover:not(.selected-number):not(.selectedOperation) {
+	background-color: #6bd32f;
+}
+
 #message {
-	text-align: center;
+	text-align: bottom;
 	font-size: 30px;
 	margin-top: 20px;
 }

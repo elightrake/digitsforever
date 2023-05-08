@@ -97,7 +97,7 @@ function calculateResult(number1, operation, number2) {
     }
 
     // Check if the result is valid
-    if (result !== null && result >= 1 && result <= 999 && Number.isInteger(result)) {
+    if (result !== null && result >= 1 && result <= 9999 && Number.isInteger(result)) {
         return result;
     } else {
         return null;

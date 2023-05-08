@@ -150,10 +150,16 @@ function handleClick(event) {
 
                 // Check if the target number is reached
                 if (result === targetNumber) {
+                    //light up the win
+                    click.classList.add('selected1');
                     // Select the h1 element
                     const h1Element = document.querySelector('h1');
                     // Change its text content
-                    h1Element.textContent = 'You win! Refresh to play again';
+                    h1Element.textContent = 'You win!';
+                    // Select the h1 element
+                    const h2Element = document.querySelector('h2');
+                    // Change its text content
+                    h2Element.textContent = 'Refresh to play again';
                 }
             } else {
                 // Invalid operation

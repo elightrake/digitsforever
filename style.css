@@ -14,7 +14,7 @@ body {
 
 h1 {
 	text-align: center;
-	font-size: 60px;
+	font-size: 45px;
 	margin-top: 0;
 }
 
@@ -98,6 +98,18 @@ h1 {
     color: white;
 }
 
+.previouslySelected {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 60px;
+	height: 100px;
+	background-color: #ecc1c1;
+	border-radius: 20px;
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+}
+
 .selectedOperation {
 	background-color: rgb(13, 13, 100);
     color: white;
@@ -125,7 +137,7 @@ h1 {
 	margin-bottom: 10px;
 }
 
-#reset {
+#undo {
 	font-size: 20px;
 	background-color: #45df8a;
 	color: #fff;
@@ -136,9 +148,10 @@ h1 {
 	transition: background-color 0.2s ease;
 }
 
-#reset:hover:not(.selected-number):not(.selectedOperation) {
+#undo:hover:not(.selected-number):not(.selectedOperation) {
 	background-color: #6bd32f;
 }
+
 
 #reveal {
 	position: relative;
@@ -159,18 +172,11 @@ h1 {
 }
 
 #message {
-	text-align: bottom;
-	font-size: 30px;
+	text-align: center;
+	font-size: 15px;
 	margin-top: 20px;
 }
 
-.number.move {
-    transition: all 1s ease-in-out;
-}
-    
-.number.move.selected1 {
-    transform: translate(calc(var(--result-left) - var(--selected1-left)), calc(var(--result-top) - var(--selected1-top)));
-    box-shadow: 0 0 10px #f00;
-}
+
   
   

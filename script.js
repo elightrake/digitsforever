@@ -12,6 +12,8 @@ let selectedNumber;
 let selectedNumber2;
 let selectedOperation;
 let originalNumbers = [];
+let operationsHistory = [];
+let gridHistory = [];
 
 // Functions
 function getRandomInteger(min, max) {
@@ -40,30 +42,24 @@ function generateNumberGrid() {
     });
 }
 
-function resetGame() {
-    // Remove the "selected" class from all the numbers
-    const numbers = document.querySelectorAll('.number');
-    numbers.forEach(number => {
-        number.classList.remove('selected1');
-        //number.classList.remove('selected2');
-    });
+function undoOperation() {
+    if (gridHistory.length > 0) {
+        // Get the previous grid state
+        const previousGridState = gridHistory[gridHistory.length - 1];
 
-    // Remove the "selectedOperation" class from all the operations
-    const operations = document.querySelectorAll('.operation');
-    operations.forEach(operation => {
-        operation.classList.remove('selectedOperation');
-    });
+        // Update the numbers in the grid
+        const numberDivs = document.querySelectorAll(".number");
+        numberDivs.forEach((div, index) => {
+            div.textContent = previousGridState[index];
+            div.addEventListener('click', handleClick);
+        });
+    }
 
-    // Clear the message
-    document.querySelector('#message').textContent = '';
-
-    // Reset the numbers to the original numbers
-    const numberDivs = document.querySelectorAll(".number");
-    numberDivs.forEach((div, index) => {
-        div.textContent = originalNumbers[index];
-        div.addEventListener("click", handleClick);
-    });
+    // Remove the most recent grid state from the history
+    gridHistory.pop();
+    operationsHistory.pop();
 }
+
 
 function calculateResult(number1, operation, number2) {
     // Parse the numbers as floats
@@ -98,20 +94,31 @@ function calculateResult(number1, operation, number2) {
 
     // Check if the result is valid
     if (result !== null && result >= 1 && result <= 9999 && Number.isInteger(result)) {
+        // Push the performed operation to the operationsHistory array
+        operationsHistory.push(`${number1} ${operation} ${number2} = ${result}`);
+        // Save the current state of the grid before the operation
+        const prevGridState = [];
+        document.querySelectorAll('.number').forEach(number => prevGridState.push(number.innerHTML));
+
+        // Push the previous state to gridHistory
+        gridHistory.push(prevGridState);
+        console.log('grid hist: ', gridHistory)
+        console.log('op hist: ', operationsHistory)
         return result;
     } else {
         return null;
     }
 }
 
+
 function handleClick(event) {
     const click = event.target;
     const isNumber = click.classList.contains('number');
     const isOperation = click.classList.contains('operation');
-    const resetButton = document.getElementById('reset');
-    resetButton.addEventListener('click', resetGame);
+    document.getElementById('undo').addEventListener('click', undoOperation);
 
     if (isNumber) {
+        console.log('num clicked: ', click.textContent);
         const selected1 = document.querySelector('.selected1');
         const selected2 = document.querySelector('.selected2');
         const selectedOperation = document.querySelector('.selectedOperation');
@@ -127,7 +134,7 @@ function handleClick(event) {
             click.classList.add('selected1');
         } else if (!selected2 && click !== selected1 && selectedOperation) {
             const result = calculateResult(selected1.textContent, selectedOperation.textContent, click.textContent);
-            console.log(`${selected1.textContent} ${selectedOperation.textContent} ${click.textContent} = ${result}`);
+            //console.log(`${selected1.textContent} ${selectedOperation.textContent} ${click.textContent} = ${result}`);
             if (result) {
                 // Replace the second selected number with the result
                 click.textContent = result;
@@ -143,7 +150,10 @@ function handleClick(event) {
 
                 // Check if the target number is reached
                 if (result === targetNumber) {
-                    alert('Congratulations, you win!');
+                    // Select the h1 element
+                    const h1Element = document.querySelector('h1');
+                    // Change its text content
+                    h1Element.textContent = 'You win! Refresh to play again';
                 }
             } else {
                 // Invalid operation
@@ -154,7 +164,6 @@ function handleClick(event) {
         } else if (selected2) {
             selected2.classList.remove('selected2');
         }
-        console.log(click.textContent);
     }
 
     if (isOperation) {
@@ -172,7 +181,7 @@ function handleClick(event) {
 
             // Toggle the "selectedOperation" class on the clicked operation
             click.classList.toggle('selectedOperation');
-            console.log(click.textContent);
+            console.log('selected op: ', click.textContent);
         } else {
             // No number is selected yet, cannot select an operation
             //alert('Please select a number first.');
@@ -194,9 +203,27 @@ function handleClick(event) {
 
 // Run it
 
+function printOperationsHistory() {
+    // Select the message div
+    const messageDiv = document.querySelector('#message');
+  
+    // Clear existing content of message div
+    messageDiv.innerHTML = '';
+  
+    // Loop through the operations history and add each operation as a separate <p> element
+    operationsHistory.forEach((operation) => {
+      const pElement = document.createElement('p');
+      pElement.textContent = operation;
+      messageDiv.appendChild(pElement);
+    });
+  }
+  
+  
+
 window.addEventListener("load", () => {
     generateTargetNumber();
     generateNumberGrid();
+    printOperationsHistory();
     document.querySelectorAll('.operation').forEach(button => {
         button.addEventListener('click', handleClick);
     });
